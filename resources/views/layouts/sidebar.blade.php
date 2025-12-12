@@ -38,6 +38,49 @@
         @role('admin')
         <li class="mb-1">
             <a href="#" class="has-arrow">
+                <div class="parent-icon"><i class="bi bi-flower2"></i></div>
+                <div class="menu-title">Data Master Hewan</div>
+            </a>
+            <ul>
+                <li class="mb-1">
+                    <a href="{{ route('admin.jenis-hewan.index') }}"><i class="bi bi-flower2"></i>Jenis Hewan</a>
+                </li>
+                <li class="mb-1">
+                    <a href="{{ route('admin.ras-hewan.index') }}"><i class="bi bi-tags-fill"></i>Ras Hewan</a>
+                </li>
+            </ul>
+        </li>
+        @endrole
+
+        @role('admin')
+        <li class="mb-1">
+            <a href="#" class="has-arrow">
+                <div class="parent-icon"><i class="bi bi-heart"></i></div>
+                <div class="menu-title">Manajemen Pet</div>
+            </a>
+            <ul>
+                <li class="mb-1">
+                    <a href="{{ route('admin.pemilik.index') }}"><i class="bi bi-people"></i>Pemilik</a>
+                </li>
+                <li class="mb-1">
+                    <a href="{{ route('admin.pet.index') }}"><i class="bi bi-heart-fill"></i>Pet</a>
+                </li>
+            </ul>
+        </li>
+        @endrole
+
+        @hasanyrole('admin|dokter')
+        <li class="mb-1">
+            <a href="{{ route('admin.rekam-medis.index') }}">
+                <div class="parent-icon"><i class="bi bi-file-medical-fill"></i></div>
+                <div class="menu-title">Rekam Medis</div>
+            </a>
+        </li>
+        @endhasanyrole
+
+        @role('admin')
+        <li class="mb-1">
+            <a href="#" class="has-arrow">
                 <div class="parent-icon"><i class="bi bi-person-gear"></i></div>
                 <div class="menu-title">User Management</div>
             </a>

@@ -10,13 +10,13 @@
                             <i class="bi bi-people"></i>
                         </div>
                         <div>
-                            <h1 class="page-title">Manajemen User</h1>
-                            <p class="page-subtitle">Kelola akun user aplikasi</p>
+                            <h1 class="page-title">Master Pemilik</h1>
+                            <p class="page-subtitle">Kelola data pemilik hewan</p>
                         </div>
                     </div>
-                    <button class="btn-add-primary" id="btnTambahUser">
+                    <button class="btn-add-primary" id="btnTambahPemilik">
                         <i class="bi bi-plus-circle"></i>
-                        <span>Tambah User</span>
+                        <span>Tambah Pemilik</span>
                     </button>
                 </div>
             </div>
@@ -26,65 +26,65 @@
                 <div class="data-card-header">
                     <div class="data-card-title">
                         <i class="bi bi-list-ul"></i>
-                        <span>Daftar User</span>
+                        <span>Daftar Pemilik</span>
                     </div>
-                    {{-- searchbox jika mau --}}
                 </div>
                 <div class="data-card-body">
                     <div class="table-container">
-                        <table class="data-table" id="tabel-users">
+                        <table class="data-table" id="tabel-pemilik">
                             <thead>
                                 <tr>
                                     <th class="col-number">#</th>
-                                    <th class="col-main">Nama</th>
-                                    <th class="col-secondary">Email</th>
-                                    <th class="col-secondary">Role</th>
+                                    <th class="col-main">Nama Pemilik</th>
+                                    <th class="col-secondary">No. WhatsApp</th>
+                                    <th class="col-secondary">Alamat</th>
                                     <th class="col-action">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($users as $i => $user)
+                                @foreach ($pemilik as $i => $owner)
                                     <tr class="data-row">
                                         <td class="col-number">
                                             <span class="row-number">{{ $i + 1 }}</span>
                                         </td>
                                         <td class="col-main">
                                             <div class="item-info">
-                                                <span class="item-name">{{ $user->name }}</span>
+                                                <span class="item-name">{{ $owner->user->name ?? '-' }}</span>
+                                                <span class="item-email">{{ $owner->user->email ?? '-' }}</span>
                                             </div>
                                         </td>
                                         <td class="col-secondary">
-                                            <span class="badge-unit">{{ $user->email }}</span>
+                                            <span class="badge bg-success">{{ $owner->no_wa }}</span>
                                         </td>
                                         <td class="col-secondary">
-                                            @foreach ($user->roles as $role)
-                                                <span class="badge bg-info">{{ $role->nama_role }}</span>
-                                            @endforeach
+                                            {{ $owner->alamat }}
                                         </td>
                                         <td class="col-action">
                                             <div class="action-buttons">
-                                                <button class="btn-action btn-edit btnEditUser"
-                                                    data-id="{{ $user->id }}" data-name="{{ $user->name }}"
-                                                    data-email="{{ $user->email }}"
-                                                    data-roles="{{ json_encode($user->roles->pluck('nama_role')) }}"
+                                                <button class="btn-action btn-edit btnEditPemilik"
+                                                    data-id="{{ $owner->idpemilik }}" 
+                                                    data-no-wa="{{ $owner->no_wa }}"
+                                                    data-alamat="{{ $owner->alamat }}"
+                                                    data-iduser="{{ $owner->iduser }}"
                                                     data-bs-toggle="tooltip" title="Edit">
                                                     <i class="bi bi-pencil-square"></i>
                                                 </button>
-                                                <button class="btn-action btn-delete btnHapusUser"
-                                                    data-id="{{ $user->id }}" data-bs-toggle="tooltip" title="Hapus">
+                                                <button class="btn-action btn-delete btnHapusPemilik"
+                                                    data-id="{{ $owner->idpemilik }}" 
+                                                    data-bs-toggle="tooltip" title="Hapus">
                                                     <i class="bi bi-trash"></i>
                                                 </button>
                                             </div>
                                         </td>
                                     </tr>
                                 @endforeach
-                                @if ($users->count() == 0)
+                                @if ($pemilik->count() == 0)
                                     <tr>
                                         <td colspan="5" class="empty-state">
                                             <div class="empty-content">
                                                 <i class="bi bi-people"></i>
-                                                <h4>Belum ada data user</h4>
-                                                <p>Klik tombol "Tambah User" untuk memulai</p>
+                                                <h4>Belum ada data pemilik</h4>
+                                                <p>Klik tombol "Tambah Pemilik" untuk memulai</p>
                                             </div>
                                         </td>
                                     </tr>
@@ -97,54 +97,48 @@
         </div>
     </div>
 
-    <!-- Modal User -->
-    <div class="modal fade" id="modalUser" tabindex="-1" aria-labelledby="modalUserLabel" aria-hidden="true">
+    <!-- Modal Pemilik -->
+    <div class="modal fade" id="modalPemilik" tabindex="-1" aria-labelledby="modalPemilikLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content custom-modal">
-                <form id="formUser">
+                <form id="formPemilik">
                     @csrf
-                    <input type="hidden" name="id" id="user_id">
+                    <input type="hidden" name="id" id="pemilik_id">
                     <div class="modal-header custom-modal-header">
                         <div class="modal-header-content">
                             <div class="modal-icon">
-                                <i class="bi bi-person"></i>
+                                <i class="bi bi-people"></i>
                             </div>
-                            <h5 class="modal-title" id="modalUserLabel">Tambah User</h5>
+                            <h5 class="modal-title" id="modalPemilikLabel">Tambah Pemilik</h5>
                         </div>
                         <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Tutup">
                             <i class="bi bi-x"></i>
                         </button>
                     </div>
                     <div class="modal-body custom-modal-body">
-                        <div id="formUserAlert"></div>
+                        <div id="formPemilikAlert"></div>
                         <div class="form-group-custom">
-                            <label for="user_name" class="form-label-custom required">
-                                <i class="bi bi-person-badge"></i> Nama
+                            <label for="iduser" class="form-label-custom required">
+                                <i class="bi bi-person"></i> Nama Pemilik (User)
                             </label>
-                            <input type="text" class="form-control-custom" id="user_name" name="name" required>
-                        </div>
-                        <div class="form-group-custom">
-                            <label for="user_email" class="form-label-custom required">
-                                <i class="bi bi-envelope"></i> Email
-                            </label>
-                            <input type="email" class="form-control-custom" id="user_email" name="email" required>
-                        </div>
-                        <div class="form-group-custom">
-                            <label for="user_password" class="form-label-custom">
-                                <i class="bi bi-key"></i> Password
-                                <span id="passwordHelp" class="text-muted"></span>
-                            </label>
-                            <input type="password" class="form-control-custom" id="user_password" name="password">
-                        </div>
-                        <div class="form-group-custom">
-                            <label for="user_roles" class="form-label-custom required">
-                                <i class="bi bi-person-gear"></i> Role
-                            </label>
-                            <select class="form-control-custom" id="user_roles" name="roles[]" required multiple="multiple" style="width: 100%">
-                                @foreach ($roles as $role)
-                                    <option value="{{ $role->nama_role }}">{{ $role->nama_role }}</option>
+                            <select class="form-control-custom" id="iduser" name="iduser" required>
+                                <option value="">Pilih User</option>
+                                @foreach ($users as $user)
+                                    <option value="{{ $user->id }}">{{ $user->name }} ({{ $user->email }})</option>
                                 @endforeach
                             </select>
+                        </div>
+                        <div class="form-group-custom">
+                            <label for="no_wa" class="form-label-custom required">
+                                <i class="bi bi-whatsapp"></i> No. WhatsApp
+                            </label>
+                            <input type="text" class="form-control-custom" id="no_wa" name="no_wa" required maxlength="45" placeholder="Contoh: 081234567890">
+                        </div>
+                        <div class="form-group-custom">
+                            <label for="alamat" class="form-label-custom required">
+                                <i class="bi bi-geo-alt"></i> Alamat
+                            </label>
+                            <textarea class="form-control-custom" id="alamat" name="alamat" required maxlength="100" rows="3" placeholder="Masukkan alamat lengkap"></textarea>
                         </div>
                     </div>
                     <div class="modal-footer custom-modal-footer">
@@ -152,7 +146,7 @@
                             <i class="bi bi-x"></i>
                             Batal
                         </button>
-                        <button type="submit" class="btn-primary-custom" id="btnSimpanUser">
+                        <button type="submit" class="btn-primary-custom" id="btnSimpanPemilik">
                             <i class="bi bi-check"></i>
                             Simpan
                         </button>
@@ -164,27 +158,21 @@
 @endsection
 @push('script')
     <script>
-        // Semua jQuery/Swal/AJAX untuk halaman users taruh di dalam event ini
         window.addEventListener('app-libraries-loaded', function() {
             const $ = window.jQuery;
 
-            const modalEl = document.getElementById('modalUser');
-            const modalUser = new window.bootstrap.Modal(modalEl);
-            const $form = $('#formUser');
-            const $btnTambah = $('#btnTambahUser');
-            const $btnSimpan = $('#btnSimpanUser');
-            const $alert = $('#formUserAlert');
-            const $password = $('#user_password');
-            const $passwordHelp = $('#passwordHelp');
-            const $rolesSelect = $('#user_roles');
+            const modalEl = document.getElementById('modalPemilik');
+            const modalPemilik = new window.bootstrap.Modal(modalEl);
+            const $form = $('#formPemilik');
+            const $btnTambah = $('#btnTambahPemilik');
+            const $btnSimpan = $('#btnSimpanPemilik');
+            const $alert = $('#formPemilikAlert');
 
             function resetForm() {
                 $form[0].reset();
-                $('#user_id').val('');
-                $rolesSelect.val(null).trigger('change');
+                $('#pemilik_id').val('');
                 $alert.html('');
-                $passwordHelp.text('');
-                $('#modalUserLabel').text('Tambah User');
+                $('#modalPemilikLabel').text('Tambah Pemilik');
                 $btnSimpan.prop('disabled', false).html('<i class="bi bi-check"></i> Simpan');
             }
 
@@ -205,38 +193,32 @@
                 });
             }
 
-            // Tombol "Tambah User"
             $btnTambah.on('click', function() {
                 resetForm();
-                modalUser.show();
+                modalPemilik.show();
             });
 
-            // Tombol Edit
-            $(document).on('click', '.btnEditUser', function() {
+            $(document).on('click', '.btnEditPemilik', function() {
                 resetForm();
-
                 const id = $(this).data('id');
-                const name = $(this).data('name');
-                const email = $(this).data('email');
-                const roles = $(this).data('roles') || [];
+                const noWa = $(this).data('no-wa');
+                const alamat = $(this).data('alamat');
+                const iduser = $(this).data('iduser');
 
-                $('#modalUserLabel').text('Edit User');
-                $('#user_id').val(id);
-                $('#user_name').val(name);
-                $('#user_email').val(email);
-                $passwordHelp.text('(kosongkan jika tidak ingin mengganti password)');
-                $rolesSelect.val(roles).trigger('change');
-
-                modalUser.show();
+                $('#modalPemilikLabel').text('Edit Pemilik');
+                $('#pemilik_id').val(id);
+                $('#no_wa').val(noWa);
+                $('#alamat').val(alamat);
+                $('#iduser').val(iduser);
+                modalPemilik.show();
             });
 
-            // Tombol Hapus
-            $(document).on('click', '.btnHapusUser', function() {
+            $(document).on('click', '.btnHapusPemilik', function() {
                 const id = $(this).data('id');
 
                 Swal.fire({
-                    title: 'Hapus User?',
-                    text: 'Data user ini akan dihapus permanen.',
+                    title: 'Hapus Pemilik?',
+                    text: 'Data pemilik ini akan dihapus permanen.',
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonText: 'Ya, hapus',
@@ -246,17 +228,16 @@
                 }).then((result) => {
                     if (!result.isConfirmed) return;
 
-                    showLoading('Menghapus user...');
+                    showLoading('Menghapus pemilik...');
                     $.ajax({
-                        url: "{{ route('admin.users.destroy') }}",
+                        url: "{{ route('admin.pemilik.destroy') }}",
                         type: 'POST',
                         data: {
                             id: id,
                             _method: 'DELETE'
                         },
                         headers: {
-                            'X-CSRF-TOKEN': document.querySelector(
-                                'meta[name="csrf-token"]').getAttribute('content'),
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                             'Accept': 'application/json'
                         },
                         success: function(res) {
@@ -264,14 +245,14 @@
                             Swal.fire({
                                 icon: 'success',
                                 title: 'Berhasil',
-                                text: res.message || 'User berhasil dihapus.'
+                                text: res.message || 'Pemilik berhasil dihapus.'
                             }).then(() => {
                                 window.location.reload();
                             });
                         },
                         error: function(xhr) {
                             hideLoading();
-                            let msg = 'Terjadi kesalahan saat menghapus user.';
+                            let msg = 'Terjadi kesalahan saat menghapus pemilik.';
                             if (xhr.responseJSON && xhr.responseJSON.message) {
                                 msg = xhr.responseJSON.message;
                             }
@@ -281,31 +262,29 @@
                 });
             });
 
-            // Submit form (tambah / edit)
             $form.on('submit', function(e) {
                 e.preventDefault();
                 $alert.html('');
 
-                const id = $('#user_id').val();
+                const id = $('#pemilik_id').val();
                 const isEdit = !!id;
 
                 const url = isEdit ?
-                    "{{ url('admin/users') }}/" + id :
-                    "{{ route('admin.users.store') }}";
+                    "{{ url('admin/pemilik') }}/" + id :
+                    "{{ route('admin.pemilik.store') }}";
 
                 const method = isEdit ? 'PUT' : 'POST';
 
                 const payload = {
-                    name: $('#user_name').val(),
-                    email: $('#user_email').val(),
-                    password: $password.val(),
-                    roles: $rolesSelect.val()
+                    iduser: $('#iduser').val(),
+                    no_wa: $('#no_wa').val(),
+                    alamat: $('#alamat').val()
                 };
 
                 $btnSimpan.prop('disabled', true)
                     .html('<i class="bi bi-arrow-repeat bx-spin"></i> Menyimpan...');
 
-                showLoading('Menyimpan data user...');
+                showLoading('Menyimpan data pemilik...');
 
                 $.ajax({
                     url: url,
@@ -315,8 +294,7 @@
                         _method: method
                     },
                     headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
-                            .getAttribute('content'),
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                         'Accept': 'application/json'
                     },
                     success: function(res) {
@@ -324,12 +302,12 @@
                         $btnSimpan.prop('disabled', false)
                             .html('<i class="bi bi-check"></i> Simpan');
 
-                        modalUser.hide();
+                        modalPemilik.hide();
 
                         Swal.fire({
                             icon: 'success',
                             title: 'Berhasil',
-                            text: res.message || 'User berhasil disimpan.'
+                            text: res.message || 'Pemilik berhasil disimpan.'
                         }).then(() => {
                             window.location.reload();
                         });
@@ -341,11 +319,9 @@
 
                         if (xhr.status === 422 && xhr.responseJSON && xhr.responseJSON.errors) {
                             const errors = xhr.responseJSON.errors;
-                            let html = `
-                            <div class="alert-custom alert-danger">
+                            let html = `<div class="alert-custom alert-danger">
                                 <i class="bi bi-exclamation-triangle"></i>
-                                <div>
-                        `;
+                                <div>`;
                             Object.keys(errors).forEach(function(key) {
                                 html += `<div>${errors[key].join('<br>')}</div>`;
                             });

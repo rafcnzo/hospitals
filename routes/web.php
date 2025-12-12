@@ -55,6 +55,37 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::post('/kode-tindakan-terapi', [\App\Http\Controllers\KodeTindakanTerapiController::class, 'store'])->name('admin.kode-tindakan-terapi.store');
     Route::put('/kode-tindakan-terapi/{id}', [\App\Http\Controllers\KodeTindakanTerapiController::class, 'update'])->name('admin.kode-tindakan-terapi.update');
     Route::delete('/kode-tindakan-terapi', [\App\Http\Controllers\KodeTindakanTerapiController::class, 'destroy'])->name('admin.kode-tindakan-terapi.destroy');
+    
+    // Jenis Hewan
+    Route::get('/jenis-hewan', [\App\Http\Controllers\JenisHewanController::class, 'index'])->name('admin.jenis-hewan.index');
+    Route::post('/jenis-hewan', [\App\Http\Controllers\JenisHewanController::class, 'store'])->name('admin.jenis-hewan.store');
+    Route::put('/jenis-hewan/{id}', [\App\Http\Controllers\JenisHewanController::class, 'update'])->name('admin.jenis-hewan.update');
+    Route::delete('/jenis-hewan', [\App\Http\Controllers\JenisHewanController::class, 'destroy'])->name('admin.jenis-hewan.destroy');
+    
+    // Ras Hewan
+    Route::get('/ras-hewan', [\App\Http\Controllers\RasHewanController::class, 'index'])->name('admin.ras-hewan.index');
+    Route::post('/ras-hewan', [\App\Http\Controllers\RasHewanController::class, 'store'])->name('admin.ras-hewan.store');
+    Route::put('/ras-hewan/{id}', [\App\Http\Controllers\RasHewanController::class, 'update'])->name('admin.ras-hewan.update');
+    Route::delete('/ras-hewan', [\App\Http\Controllers\RasHewanController::class, 'destroy'])->name('admin.ras-hewan.destroy');
+    
+    // Pemilik
+    Route::get('/pemilik', [\App\Http\Controllers\PemilikController::class, 'index'])->name('admin.pemilik.index');
+    Route::post('/pemilik', [\App\Http\Controllers\PemilikController::class, 'store'])->name('admin.pemilik.store');
+    Route::put('/pemilik/{id}', [\App\Http\Controllers\PemilikController::class, 'update'])->name('admin.pemilik.update');
+    Route::delete('/pemilik', [\App\Http\Controllers\PemilikController::class, 'destroy'])->name('admin.pemilik.destroy');
+    
+    // Pet
+    Route::get('/pet', [\App\Http\Controllers\PetController::class, 'index'])->name('admin.pet.index');
+    Route::post('/pet', [\App\Http\Controllers\PetController::class, 'store'])->name('admin.pet.store');
+    Route::put('/pet/{id}', [\App\Http\Controllers\PetController::class, 'update'])->name('admin.pet.update');
+    Route::delete('/pet', [\App\Http\Controllers\PetController::class, 'destroy'])->name('admin.pet.destroy');
+    
+    // Rekam Medis
+    Route::get('/rekam-medis', [\App\Http\Controllers\RekamMedisController::class, 'index'])->name('admin.rekam-medis.index');
+    Route::post('/rekam-medis', [\App\Http\Controllers\RekamMedisController::class, 'store'])->name('admin.rekam-medis.store');
+    Route::get('/rekam-medis/{id}', [\App\Http\Controllers\RekamMedisController::class, 'show'])->name('admin.rekam-medis.show');
+    Route::put('/rekam-medis/{id}', [\App\Http\Controllers\RekamMedisController::class, 'update'])->name('admin.rekam-medis.update');
+    Route::delete('/rekam-medis', [\App\Http\Controllers\RekamMedisController::class, 'destroy'])->name('admin.rekam-medis.destroy');
 });
 
 

@@ -3,10 +3,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Role;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
-use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -18,7 +19,7 @@ class UserController extends Controller
             ->orderBy('name')
             ->get();
 
-        $roles = Role::orderBy('name')->get();
+        $roles = Role::orderBy('nama_role')->get();
 
         return view('users.index', compact('title', 'users', 'roles'));
     }
@@ -30,7 +31,7 @@ class UserController extends Controller
             'email'    => ['required', 'email', 'max:255', 'unique:users,email'],
             'password' => ['required', 'string', 'min:6'],
             'roles'    => ['required', 'array'],
-            'roles.*'  => ['string', 'exists:roles,name'],
+            'roles.*'  => ['string', 'exists:role,nama_role'],
         ]);
 
         $user = User::create([
@@ -39,8 +40,10 @@ class UserController extends Controller
             'password' => Hash::make($validated['password']),
         ]);
 
-        // Spatie
-        $user->assignRole($validated['roles']);
+        // Assign roles using custom method
+        foreach ($validated['roles'] as $roleName) {
+            $user->assignRole($roleName);
+        }
 
         return response()->json([
             'status'  => 'success',
@@ -49,7 +52,7 @@ class UserController extends Controller
                 'id'    => $user->id,
                 'name'  => $user->name,
                 'email' => $user->email,
-                'roles' => $user->getRoleNames(),
+                'roles' => $user->roles->pluck('nama_role'),
             ],
         ]);
     }
@@ -68,7 +71,7 @@ class UserController extends Controller
             ],
             'password' => ['nullable', 'string', 'min:6'],
             'roles'    => ['required', 'array'],
-            'roles.*'  => ['string', 'exists:roles,name'],
+            'roles.*'  => ['string', 'exists:role,nama_role'],
         ]);
 
         $user->name  = $validated['name'];
@@ -80,7 +83,15 @@ class UserController extends Controller
 
         $user->save();
 
-        $user->syncRoles($validated['roles']);
+        // Remove all existing roles
+        foreach ($user->roles as $role) {
+            $user->removeRole($role->nama_role);
+        }
+
+        // Assign new roles
+        foreach ($validated['roles'] as $roleName) {
+            $user->assignRole($roleName);
+        }
 
         return response()->json([
             'status'  => 'success',
@@ -89,21 +100,15 @@ class UserController extends Controller
                 'id'    => $user->id,
                 'name'  => $user->name,
                 'email' => $user->email,
-                'roles' => $user->getRoleNames(),
+                'roles' => $user->roles->pluck('nama_role'),
             ],
         ]);
     }
 
-    public function destroy(Request $request)
+    public function destroy(Request $request, $id)
     {
-        $request->validate([
-            'id' => ['required', 'integer', 'exists:users,id'],
-        ]);
-
-        $id = $request->input('id');
-
         // Optional: cegah hapus diri sendiri
-        if (auth()->id() == $id) {
+        if (Auth::id() == $id) {
             return response()->json([
                 'status'  => 'error',
                 'message' => 'Anda tidak dapat menghapus akun sendiri.',
@@ -130,7 +135,7 @@ class UserController extends Controller
                 'id'    => $user->id,
                 'name'  => $user->name,
                 'email' => $user->email,
-                'roles' => $user->roles->pluck('name'),
+                'roles' => $user->roles->pluck('nama_role'),
             ],
         ]);
     }

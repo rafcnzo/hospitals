@@ -74,17 +74,17 @@
                                 <div class="header-action d-flex align-items-center ms-4">
                                     @if (Route::has('login'))
                                         @auth
-                                            <a href="{{ url('/dashboard') }}" class="button button-sm radius-20 text-light" title="Dashboard">
-                                                <i class="fas fa-user-circle"></i>
+                                            <a href="{{ url('/dashboard') }}" class="btn btn-primary radius-30" title="Dashboard">
+                                                <i class="fas fa-th-large me-1"></i> Dashboard
                                             </a>
                                         @else
-                                            <a href="{{ route('login') }}" class="text-dark me-3 fw-bold" style="text-decoration: none;" title="Log in">
-                                                <i class="fas fa-sign-in-alt"></i>
+                                            <a href="{{ route('login') }}" class="btn btn-outline-primary radius-30 me-2" title="Masuk">
+                                                <i class="fas fa-sign-in-alt me-1"></i> Masuk
                                             </a>
 
                                             @if (Route::has('register'))
-                                                <a href="{{ route('register') }}" class="btn btn-primary radius-30 text-light" title="Register">
-                                                    <i class="fas fa-user-plus"></i>
+                                                <a href="{{ route('register') }}" class="btn btn-primary radius-30" title="Daftar">
+                                                    <i class="fas fa-user-plus me-1"></i> Daftar
                                                 </a>
                                             @endif
                                         @endauth
