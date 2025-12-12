@@ -73,7 +73,7 @@
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
                     <li>
-                        <a class="dropdown-item" href="#">
+                        <a class="dropdown-item" href="{{ route('profile.edit') }}">
                             <i class="bi bi-person"></i><span> Profil</span>
                         </a>
                     </li>
@@ -81,7 +81,8 @@
                         <div class="dropdown-divider mb-0"></div>
                     </li>
                     <li>
-                        <form method="POST" action="#">
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
                             <button type="submit" class="dropdown-item"
                                 style="border: none !important; outline: none !important; box-shadow: none !important; background: none; padding-left: 15px; width: 100%; text-align: left;">
                                 <i class="bi bi-box-arrow-right"></i><span> Logout</span>

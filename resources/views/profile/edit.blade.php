@@ -1,29 +1,60 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Profile') }}
-        </h2>
-    </x-slot>
+@extends('layouts.app')
+@section('content')
+    <div class="page-content">
+        <div class="container-fluid">
+            <!-- Page Header -->
+            <div class="page-header">
+                <div class="page-header-content">
+                    <div class="page-title-wrapper">
+                        <div class="page-icon">
+                            <i class="bi bi-person-circle"></i>
+                        </div>
+                        <div>
+                            <h1 class="page-title">Profil Pengguna</h1>
+                            <p class="page-subtitle">Kelola informasi profil dan keamanan akun Anda</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="max-w-xl">
+            <!-- Update Profile Information -->
+            <div class="data-card mb-4">
+                <div class="data-card-header">
+                    <div class="data-card-title">
+                        <i class="bi bi-person-badge"></i>
+                        <span>Informasi Profil</span>
+                    </div>
+                </div>
+                <div class="data-card-body">
                     @include('profile.partials.update-profile-information-form')
                 </div>
             </div>
 
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="max-w-xl">
+            <!-- Update Password -->
+            <div class="data-card mb-4">
+                <div class="data-card-header">
+                    <div class="data-card-title">
+                        <i class="bi bi-key"></i>
+                        <span>Update Password</span>
+                    </div>
+                </div>
+                <div class="data-card-body">
                     @include('profile.partials.update-password-form')
                 </div>
             </div>
 
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="max-w-xl">
+            <!-- Delete Account -->
+            <div class="data-card mb-4">
+                <div class="data-card-header">
+                    <div class="data-card-title">
+                        <i class="bi bi-trash"></i>
+                        <span>Hapus Akun</span>
+                    </div>
+                </div>
+                <div class="data-card-body">
                     @include('profile.partials.delete-user-form')
                 </div>
             </div>
         </div>
     </div>
-</x-app-layout>
+@endsection

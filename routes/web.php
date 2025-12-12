@@ -37,6 +37,24 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::get('/permissions/{id}', [PermissionController::class, 'show']);
     Route::put('/permissions/{id}', [PermissionController::class, 'update']);
     Route::delete('/permissions', [PermissionController::class, 'destroy'])->name('admin.permissions.destroy');
+    
+    // Kategori
+    Route::get('/kategori', [\App\Http\Controllers\KategoriController::class, 'index'])->name('admin.kategori.index');
+    Route::post('/kategori', [\App\Http\Controllers\KategoriController::class, 'store'])->name('admin.kategori.store');
+    Route::put('/kategori/{id}', [\App\Http\Controllers\KategoriController::class, 'update'])->name('admin.kategori.update');
+    Route::delete('/kategori', [\App\Http\Controllers\KategoriController::class, 'destroy'])->name('admin.kategori.destroy');
+    
+    // Kategori Klinis
+    Route::get('/kategori-klinis', [\App\Http\Controllers\KategoriKlinisController::class, 'index'])->name('admin.kategori-klinis.index');
+    Route::post('/kategori-klinis', [\App\Http\Controllers\KategoriKlinisController::class, 'store'])->name('admin.kategori-klinis.store');
+    Route::put('/kategori-klinis/{id}', [\App\Http\Controllers\KategoriKlinisController::class, 'update'])->name('admin.kategori-klinis.update');
+    Route::delete('/kategori-klinis', [\App\Http\Controllers\KategoriKlinisController::class, 'destroy'])->name('admin.kategori-klinis.destroy');
+    
+    // Kode Tindakan Terapi
+    Route::get('/kode-tindakan-terapi', [\App\Http\Controllers\KodeTindakanTerapiController::class, 'index'])->name('admin.kode-tindakan-terapi.index');
+    Route::post('/kode-tindakan-terapi', [\App\Http\Controllers\KodeTindakanTerapiController::class, 'store'])->name('admin.kode-tindakan-terapi.store');
+    Route::put('/kode-tindakan-terapi/{id}', [\App\Http\Controllers\KodeTindakanTerapiController::class, 'update'])->name('admin.kode-tindakan-terapi.update');
+    Route::delete('/kode-tindakan-terapi', [\App\Http\Controllers\KodeTindakanTerapiController::class, 'destroy'])->name('admin.kode-tindakan-terapi.destroy');
 });
 
 

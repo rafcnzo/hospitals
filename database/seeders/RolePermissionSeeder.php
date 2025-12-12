@@ -26,6 +26,9 @@ class RolePermissionSeeder extends Seeder
             'manage medicines',
             'manage procurement',
             'manage reports',
+            'manage kategori',
+            'manage kategori klinis',
+            'manage kode tindakan terapi',
         ];
 
         foreach ($permissions as $perm) {

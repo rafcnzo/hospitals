@@ -14,7 +14,28 @@
                 <div class="menu-title">Dashboard</div>
             </a>
         </li>
+        
+        @role('admin')
+        <li class="mb-1">
+            <a href="#" class="has-arrow">
+                <div class="parent-icon"><i class="bi bi-hospital"></i></div>
+                <div class="menu-title">Data Master</div>
+            </a>
+            <ul>
+                <li class="mb-1">
+                    <a href="{{ route('admin.kategori.index') }}"><i class="bi bi-tags"></i>Kategori</a>
+                </li>
+                <li class="mb-1">
+                    <a href="{{ route('admin.kategori-klinis.index') }}"><i class="bi bi-heart-pulse"></i>Kategori Klinis</a>
+                </li>
+                <li class="mb-1">
+                    <a href="{{ route('admin.kode-tindakan-terapi.index') }}"><i class="bi bi-file-medical"></i>Kode Tindakan Terapi</a>
+                </li>
+            </ul>
+        </li>
+        @endrole
 
+        @role('admin')
         <li class="mb-1">
             <a href="#" class="has-arrow">
                 <div class="parent-icon"><i class="bi bi-person-gear"></i></div>
@@ -30,6 +51,7 @@
                 </li>
             </ul>
         </li>
+        @endrole
     </ul>
 </div>
 
