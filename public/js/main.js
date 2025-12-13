@@ -67,7 +67,26 @@
 		}
 	};
 
-    window.document.addEventListener('scroll', onScroll);
+    window.addEventListener('scroll', function () {
+        var header_navbar = document.querySelector(".header-6");
+        if (!header_navbar) return;
+    
+        if (window.pageYOffset > 20) {
+            header_navbar.classList.add("sticky");
+        } else {
+            header_navbar.classList.remove("sticky");
+        }
+    
+        var backToTo = document.querySelector(".scroll-top");
+        if (backToTo) {
+            if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
+                backToTo.style.display = "flex";
+            } else {
+                backToTo.style.display = "none";
+            }
+        }
+    });
+    
     
 
     var slider = document.querySelector('.pricing-active');

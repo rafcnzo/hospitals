@@ -16,6 +16,230 @@
     <link rel="stylesheet" href="{{ asset('css/lindy-uikit.css') }}" />
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* Styling untuk dropdown menu */
+        .dropdown-menu {
+            border: none;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+            border-radius: 12px;
+            padding: 0.5rem 0;
+            min-width: 240px;
+            margin-top: 0.5rem !important;
+        }
+
+        .dropdown-item {
+            padding: 0.7rem 1.25rem;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            font-size: 0.95rem;
+            color: #495057;
+        }
+
+        .dropdown-item i {
+            width: 20px;
+            margin-right: 12px;
+            font-size: 1rem;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f8f9fa;
+            color: #0d6efd;
+            padding-left: 1.5rem;
+        }
+
+        .dropdown-item.text-danger:hover {
+            background-color: #fff5f5;
+            color: #dc3545;
+        }
+
+        .dropdown-divider {
+            margin: 0.5rem 0;
+            opacity: 0.1;
+        }
+
+        /* User badge yang lebih clean dan transparent */
+        .user-badge {
+            display: flex;
+            align-items: center;
+            padding: 0.4rem 0.8rem;
+            background-color: transparent;
+            border: 1px solid #2F80ED;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-height: 48px;
+        }
+
+        .user-badge:hover {
+            background-color: rgba(0, 0, 0, 0.03);
+            border-color: rgba(0, 0, 0, 0.12);
+            transform: translateY(-1px);
+        }
+
+        /* Navbar scrolled state */
+        .navbar.scrolled .user-badge {
+            border-color: rgba(0, 0, 0, 0.1);
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2F80ED 0%, #56CCF2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-right: 8px;
+            line-height: 1.3;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #212529;
+        }
+
+        .user-role {
+            font-size: 0.75rem;
+            color: #6c757d;
+            margin-top: 1px;
+        }
+
+        .user-badge .fas.fa-chevron-down {
+            font-size: 0.75rem;
+            color: #6c757d;
+            margin-left: 4px;
+            transition: transform 0.3s ease;
+        }
+
+        .user-badge[aria-expanded="true"] .fas.fa-chevron-down {
+            transform: rotate(180deg);
+        }
+
+        /* Notification badge */
+        .badge {
+            font-size: 0.7rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+
+        /* Fix button alignment dengan nav items */
+        .header-action {
+            margin-inline-start: 10px;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .header-action .btn {
+            font-size: 0.95rem;
+            padding: 0.5rem 1.25rem;
+            font-weight: 500;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            border-width: 2px;
+            min-height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .header-action .btn i {
+            font-size: 0.9rem;
+        }
+
+        .header-action .btn-outline-primary {
+            color: #212529;
+            border-color: #2F80ED ;
+            background-color: transparent;
+        }
+
+        .header-action .btn-outline-primary:hover {
+            background-color: #2F80ED;
+            border-color: rgba(0, 0, 0, 0.2);
+            color: #000000;
+            transform: translateY(-1px);
+        }
+
+        .header-action .btn-primary {
+            background: linear-gradient(135deg, #2F80ED 0%, #56CCF2 100%);
+            border: none;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .header-action .btn-primary:hover {
+            box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+            transform: translateY(-2px);
+            color:#000000;
+        }
+
+        /* Navbar items alignment */
+        .navbar-nav .nav-item .page-scroll {
+            padding: 0.5rem 1rem;
+            font-size: 0.95rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 991px) {
+            .user-badge {
+                width: 100%;
+                justify-content: space-between;
+                margin-bottom: 1rem;
+                border-radius: 12px;
+            }
+
+            .dropdown-menu {
+                position: static !important;
+                transform: none !important;
+                box-shadow: none;
+                border: 1px solid #dee2e6;
+                margin-top: 0.5rem !important;
+                width: 100%;
+            }
+
+            .header-action {
+                width: 100%;
+                flex-direction: column;
+            }
+
+            .header-action .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .navbar-nav .nav-item .page-scroll {
+                height: auto;
+            }
+        }
+
+        /* Smooth scroll untuk navbar background */
+        .navbar-area {
+            transition: all 0.3s ease;
+        }
+
+        .navbar-area.scrolled {
+            background-color: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+        }
+    </style>
 </head>
 
 <body>
@@ -36,66 +260,9 @@
             </div>
         </div>
     </div>
+
     <section id="home" class="hero-section-wrapper-5">
-        <header class="header header-6">
-            <div class="navbar-area">
-                <div class="container">
-                    <div class="row align-items-center">
-                        <div class="col-lg-12">
-                            <nav class="navbar navbar-expand-lg">
-                                <a class="navbar-brand" href="{{ url('/') }}">
-                                    <img src="{{ asset('logo.png') }}" alt="Ratatouille Hospital" />
-                                </a>
-                                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#navbarSupportedContent6" aria-controls="navbarSupportedContent6"
-                                    aria-expanded="false" aria-label="Toggle navigation">
-                                    <span class="toggler-icon"></span>
-                                    <span class="toggler-icon"></span>
-                                    <span class="toggler-icon"></span>
-                                </button>
-
-                                <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent6">
-                                    <ul id="nav6" class="navbar-nav ms-auto">
-                                        <li class="nav-item">
-                                            <a class="page-scroll active" href="#home">Beranda</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="page-scroll" href="#struktur">Struktur Organisasi</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="page-scroll" href="#visi-misi">Visi & Misi</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="page-scroll" href="#contact">Kontak</a>
-                                        </li>
-                                    </ul>
-                                </div>
-
-                                <div class="header-action d-flex align-items-center ms-4">
-                                    @if (Route::has('login'))
-                                        @auth
-                                            <a href="{{ url('/dashboard') }}" class="btn btn-primary radius-30" title="Dashboard">
-                                                <i class="fas fa-th-large me-1"></i> Dashboard
-                                            </a>
-                                        @else
-                                            <a href="{{ route('login') }}" class="btn btn-outline-primary radius-30 me-2" title="Masuk">
-                                                <i class="fas fa-sign-in-alt me-1"></i> Masuk
-                                            </a>
-
-                                            @if (Route::has('register'))
-                                                <a href="{{ route('register') }}" class="btn btn-primary radius-30" title="Daftar">
-                                                    <i class="fas fa-user-plus me-1"></i> Daftar
-                                                </a>
-                                            @endif
-                                        @endauth
-                                    @endif
-                                </div>
-                            </nav>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </header>
+        @include('layouts.pemilik.navbar')
 
         <div class="hero-section hero-style-5 img-bg"
             style="background-image: url('{{ asset('img/hero/hero-5/hero-bg.svg') }}')">
@@ -123,6 +290,8 @@
             </div>
         </div>
     </section>
+
+    {{-- Sections lainnya tetap sama --}}
     <section id="struktur" class="feature-section feature-style-5">
         <div class="container">
             <div class="row justify-content-center">
@@ -247,6 +416,7 @@
             </div>
         </div>
     </section>
+
     <section id="visi-misi" class="about-section about-style-4">
         <div class="container">
             <div class="row align-items-center">
@@ -295,6 +465,7 @@
             </div>
         </div>
     </section>
+
     <section id="contact" class="contact-section contact-style-3">
         <div class="container">
             <div class="row justify-content-center">
@@ -347,6 +518,7 @@
             </div>
         </div>
     </section>
+
     <footer class="footer footer-style-4">
         <div class="container">
             <div class="copyright-wrapper wow fadeInUp" data-wow-delay=".2s">
@@ -356,12 +528,25 @@
             </div>
         </div>
     </footer>
+
     <a href="#" class="scroll-top"> <i class="fas fa-chevron-up"></i> </a>
 
     <script src="{{ asset('js/bootstrap-5.0.0-beta1.min.js') }}"></script>
     <script src="{{ asset('js/tiny-slider.js') }}"></script>
     <script src="{{ asset('js/wow.min.js') }}"></script>
     <script src="{{ asset('js/main.js') }}"></script>
+
+    <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar-area');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    </script>
 </body>
 
 </html>

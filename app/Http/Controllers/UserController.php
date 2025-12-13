@@ -2,10 +2,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use App\Models\Role;
+use App\Models\User; 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 
@@ -19,7 +20,7 @@ class UserController extends Controller
             ->orderBy('name')
             ->get();
 
-        $roles = Role::orderBy('nama_role')->get();
+        $roles = Role::orderBy('name')->get();
 
         return view('users.index', compact('title', 'users', 'roles'));
     }
@@ -31,28 +32,29 @@ class UserController extends Controller
             'email'    => ['required', 'email', 'max:255', 'unique:users,email'],
             'password' => ['required', 'string', 'min:6'],
             'roles'    => ['required', 'array'],
-            'roles.*'  => ['string', 'exists:role,nama_role'],
+            'roles.*'  => ['string', 'exists:roles,name'],
         ]);
 
-        $user = User::create([
-            'name'     => $validated['name'],
-            'email'    => $validated['email'],
-            'password' => Hash::make($validated['password']),
-        ]);
+        DB::transaction(function () use ($validated) {
+            $user = User::create([
+                'name'     => $validated['name'],
+                'email'    => $validated['email'],
+                'password' => Hash::make($validated['password']),
+            ]);
 
-        // Assign roles using custom method
-        foreach ($validated['roles'] as $roleName) {
-            $user->assignRole($roleName);
-        }
+            $user->assignRole($validated['roles']);
+        });
+
+        $newUser = User::with('roles')->where('email', $validated['email'])->first();
 
         return response()->json([
             'status'  => 'success',
             'message' => 'User berhasil ditambahkan.',
             'data'    => [
-                'id'    => $user->id,
-                'name'  => $user->name,
-                'email' => $user->email,
-                'roles' => $user->roles->pluck('nama_role'),
+                'id'    => $newUser->id,
+                'name'  => $newUser->name,
+                'email' => $newUser->email,
+                'roles' => $newUser->roles->pluck('name'),
             ],
         ]);
     }
@@ -71,27 +73,21 @@ class UserController extends Controller
             ],
             'password' => ['nullable', 'string', 'min:6'],
             'roles'    => ['required', 'array'],
-            'roles.*'  => ['string', 'exists:role,nama_role'],
+            'roles.*'  => ['string', 'exists:roles,name'],
         ]);
 
-        $user->name  = $validated['name'];
-        $user->email = $validated['email'];
+        DB::transaction(function () use ($user, $validated) {
+            $user->name  = $validated['name'];
+            $user->email = $validated['email'];
 
-        if (! empty($validated['password'])) {
-            $user->password = Hash::make($validated['password']);
-        }
+            if (! empty($validated['password'])) {
+                $user->password = Hash::make($validated['password']);
+            }
 
-        $user->save();
+            $user->save();
 
-        // Remove all existing roles
-        foreach ($user->roles as $role) {
-            $user->removeRole($role->nama_role);
-        }
-
-        // Assign new roles
-        foreach ($validated['roles'] as $roleName) {
-            $user->assignRole($roleName);
-        }
+            $user->syncRoles($validated['roles']);
+        });
 
         return response()->json([
             'status'  => 'success',
@@ -100,14 +96,13 @@ class UserController extends Controller
                 'id'    => $user->id,
                 'name'  => $user->name,
                 'email' => $user->email,
-                'roles' => $user->roles->pluck('nama_role'),
+                'roles' => $user->roles->pluck('name'),
             ],
         ]);
     }
 
     public function destroy(Request $request, $id)
     {
-        // Optional: cegah hapus diri sendiri
         if (Auth::id() == $id) {
             return response()->json([
                 'status'  => 'error',
@@ -124,7 +119,6 @@ class UserController extends Controller
         ]);
     }
 
-    // route GET /admin/users/{id} kalau mau dipakai AJAX get detail
     public function edit($id)
     {
         $user = User::with('roles')->findOrFail($id);
@@ -135,7 +129,7 @@ class UserController extends Controller
                 'id'    => $user->id,
                 'name'  => $user->name,
                 'email' => $user->email,
-                'roles' => $user->roles->pluck('nama_role'),
+                'roles' => $user->roles->pluck('name'),
             ],
         ]);
     }

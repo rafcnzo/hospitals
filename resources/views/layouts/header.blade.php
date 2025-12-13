@@ -1,6 +1,7 @@
 <header>
     <div class="topbar d-flex align-items-center">
         <nav class="navbar navbar-expand">
+        <nav class="navbar navbar-expand">
             <div class="mobile-toggle-menu"><i class='bx bx-menu'></i></div>
             <div class="header-datetime d-none d-md-flex align-items-center ms-3">
                 <i class="bi bi-calendar3 me-2"></i>
@@ -9,49 +10,9 @@
                 <span id="currentTime">13:01:05</span>
             </div>
             <div class="top-menu ms-auto">
+            <div class="top-menu ms-auto">
 
-                {{-- Notifikasi pembayaran H-3 jatuh tempo, status != lunas (statik dulu, non fungsional) --}}
-                <div class="dropdown notif-dropdown me-3">
-                    <a href="#" class="nav-link position-relative" data-bs-toggle="dropdown" aria-expanded="false" id="notifDropdown">
-                        <i class="bi bi-bell"></i>
-                        <span class="badge bg-danger notif-badge">2</span>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end p-0" aria-labelledby="notifDropdown" style="min-width: 300px;">
-                        <li class="dropdown-header px-3 pt-2 pb-2 fw-semibold">Notifikasi Pembayaran Jatuh Tempo H-3</li>
-                        <li>
-                            <a class="dropdown-item d-flex align-items-start" href="#">
-                                <div class="me-2">
-                                    <i class="bi bi-exclamation-triangle text-warning"></i>
-                                </div>
-                                <div class="flex-grow-1">
-                                    <div>
-                                        <b>PO #1234</b> - Supplier ABC
-                                    </div>
-                                    <div class="small text-muted">
-                                        Jatuh tempo: 20 Okt 2025 | Status: 
-                                        <span class="badge bg-danger">Belum Dibayar</span>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item d-flex align-items-start" href="#">
-                                <div class="me-2">
-                                    <i class="bi bi-exclamation-triangle text-warning"></i>
-                                </div>
-                                <div class="flex-grow-1">
-                                    <div>
-                                        <b>PO #1235</b> - Supplier XYZ
-                                    </div>
-                                    <div class="small text-muted">
-                                        Jatuh tempo: 20 Okt 2025 | Status: 
-                                        <span class="badge bg-warning text-dark">Sebagian Dibayar</span>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+                   
             </div>
             <div class="user-box dropdown ms-3">
                 @php

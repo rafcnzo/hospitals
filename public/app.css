@@ -521,7 +521,7 @@ a {
 
 /* === PAGE HEADER === */
 .page-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #2F80ED 0%, #56CCF2 100%);
     border-radius: 12px;
     padding: 2rem;
     margin-bottom: 2rem;
@@ -572,7 +572,7 @@ a {
 /* === PRIMARY BUTTON === */
 .btn-add-primary {
     background: white;
-    color: #667eea;
+    color: #2F80ED;
     border: none;
     padding: 0.75rem 1.75rem;
     border-radius: 10px;
@@ -676,7 +676,7 @@ a {
 }
 
 .stat-primary .stat-icon {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #2F80ED 0%, #56CCF2 100%);
     color: white;
 }
 
@@ -999,7 +999,7 @@ a {
 }
 
 .custom-modal-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #2F80ED 0%, #56CCF2 100%);
     padding: 1.75rem 2rem;
     border: none;
     display: flex;
@@ -1136,7 +1136,7 @@ a {
 }
 
 .btn-primary-custom {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #2F80ED 0%, #56CCF2 100%);
     color: white;
     box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
 }
@@ -1476,7 +1476,7 @@ a {
 }
 
 .legend-primary {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #2F80ED 0%, #56CCF2 100%);
 }
 
 .legend-success {
@@ -1815,72 +1815,104 @@ a {
     top: 1px;
 }
 
-/* ===== SELECT2 MULTIPLE MODERN CLEAN FIX ===== */
-.select2-container--default .select2-selection--multiple {
-    background-color: #fff !important;
-    border: 2px solid #e9ecef !important;
-    border-radius: 10px !important;
-    min-height: 45px !important;
-    padding: 6px 10px !important;
-    display: flex !important;
-    align-items: center !important;
-    flex-wrap: wrap !important;
-    gap: 6px;
+/* Select2 Custom Styles for Rekam Medis Modal */
+.select2-container {
+    width: 100% !important;
+    font-size: 1rem;
 }
 
-/* Remove UL indentation & make clean layout */
-.select2-selection__rendered {
-    display: flex !important;
-    flex-wrap: wrap !important;
-    gap: 6px;
-    padding-left: 0 !important;
-    margin: 0 !important;
+.select2-container .select2-selection--single {
+    height: 42px;
+    padding: 6px 12px;
+    background: #fff;
+    border: 1.5px solid #d5dae7;
+    border-radius: 6px;
+    transition: border-color 0.2s;
+    display: flex;
+    align-items: center;
+    box-shadow: none;
+    min-height: 42px;
 }
 
-/* Nice tags */
-.select2-selection__choice {
-    background: #eef2ff !important;
-    color: #4f46e5 !important;
-    border: 1px solid #c7d2fe !important;
-    padding: 4px 8px !important;
-    border-radius: 6px !important;
-    font-size: 0.85rem !important;
-    font-weight: 600 !important;
+.select2-container .select2-selection--single:focus,
+.select2-container .select2-selection--single:active {
+    outline: none;
+    border-color: #5e81f4;
+    box-shadow: 0 0 0 1px #c3d3fd;
 }
 
-/* Remove button style inside tag */
-.select2-selection__choice__remove {
-    color: #ef4444 !important;
-    margin-right: 6px !important;
-    font-weight: bold !important;
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    color: #333;
+    line-height: 28px;
+    padding-left: 0;
+    padding-right: 26px;
+    font-size: 1rem;
 }
 
-/* Inline search box fix (textarea kecil amat itu biang kerok!) */
-.select2-search__field {
-    margin: 0 !important;
-    padding: 6px 0 !important;
-    font-size: 0.9rem !important;
-    height: auto !important;
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 100%;
+    right: 8px;
+    width: 26px;
+    top: 0;
 }
 
-/* Remove weird box around search inline */
-.select2-search--inline {
-    margin: 0 !important;
-}
-
-/* Focus state cantik */
-.select2-container--default.select2-container--focus .select2-selection--multiple {
-    border-color: #6366f1 !important;
-    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15) !important;
-}
-
-/* Dropdown */
-.select2-container--default .select2-results > .select2-results__options {
-    padding: 6px !important;
+.select2-container--default .select2-selection--single .select2-selection__arrow b {
+    border-color: #5e81f4 transparent transparent transparent;
+    border-width: 5px 5px 0 5px;
 }
 
 .select2-dropdown {
-    border: 2px solid #e9ecef !important;
-    border-radius: 12px !important;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.1) !important;
+    border-radius: 6px;
+    border: 1px solid #d5dae7;
+    box-shadow: 0 6px 24px rgba(34, 43, 71, 0.08);
+    font-size: 1rem;
+    padding: 0 2px;
+    overflow: hidden;
 }
+
+.select2-results__option {
+    padding: 10px 15px;
+    border-radius: 4px;
+    transition: background 0.1s;
+    font-size: 1rem;
+}
+
+.select2-results__option--highlighted {
+    background: #eef3fd;
+    color: #5e81f4;
+}
+
+.select2-results__option[aria-selected="true"] {
+    background: #5e81f4;
+    color: #fff;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__placeholder {
+    color: #a9b4c9;
+}
+
+.select2-container--open .select2-selection--single {
+    border-color: #5e81f4;
+    box-shadow: 0 0 0 1.5px #dde7fc;
+}
+
+.select2-container--default .select2-results__option--selected {
+    background: #5e81f4;
+    color: #fff;
+}
+
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+    background: #dde7fc;
+    color: #354b6e;
+}
+
+@media (max-width: 600px) {
+    .select2-container .select2-selection--single {
+        height: 38px;
+        font-size: 0.97rem;
+    }
+    .select2-results__option {
+        font-size: .97rem;
+    }
+}
+

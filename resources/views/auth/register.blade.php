@@ -5,7 +5,7 @@
     <title>Register</title>
 
     {{-- Load CSS & JS dari Vite --}}
-    @vite(['resources/css/admin.css', 'resources/js/app.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         .background-radial-gradient {
             background-color: hsl(218, 41%, 15%);
@@ -31,7 +31,7 @@
             width: 220px;
             top: -60px;
             left: -130px;
-            background: radial-gradient(#44006b, #ad1fff);
+            background: radial-gradient(#1b006b, #1f50ff);
             overflow: hidden;
             position: absolute;
             border-radius: 50%;
@@ -43,7 +43,7 @@
             right: -110px;
             width: 300px;
             height: 300px;
-            background: radial-gradient(#44006b, #ad1fff);
+            background: radial-gradient(#20006b, #1f57ff);
             overflow: hidden;
             position: absolute;
         }

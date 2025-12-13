@@ -69,4 +69,6 @@ class PemilikController extends Controller
             'message' => 'Pemilik berhasil dihapus.',
         ]);
     }
+
+    
 }

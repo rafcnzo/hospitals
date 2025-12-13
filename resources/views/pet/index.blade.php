@@ -37,45 +37,69 @@
                                     <th class="col-number">#</th>
                                     <th class="col-main">Nama Pet</th>
                                     <th class="col-secondary">Pemilik</th>
-                                    <th class="col-secondary">Ras</th>
+                                    <th class="col-secondary">Ras & Jenis</th>
                                     <th class="col-secondary">Kelamin</th>
                                     <th class="col-secondary">Tanggal Lahir</th>
                                     <th class="col-action">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($pets as $i => $pet)
+                                @forelse ($pets as $i => $pet)
                                     <tr class="data-row">
+                                        {{-- No --}}
                                         <td class="col-number">
                                             <span class="row-number">{{ $i + 1 }}</span>
                                         </td>
+                                        {{-- Nama Pet & Warna Tanda --}}
                                         <td class="col-main">
-                                            <div class="item-info">
-                                                <span class="item-name">{{ $pet->nama }}</span>
-                                                <span class="item-email">{{ $pet->warna_tanda }}</span>
-                                            </div>
-                                        </td>
-                                        <td class="col-secondary">
-                                            <span class="badge bg-info">{{ $pet->pemilik->user->name ?? '-' }}</span>
-                                        </td>
-                                        <td class="col-secondary">
-                                            <span class="badge bg-success">{{ $pet->rasHewan->nama_ras ?? '-' }}</span>
-                                            <small class="d-block text-muted mt-1">{{ $pet->rasHewan->jenisHewan->nama_jenis_hewan ?? '-' }}</small>
-                                        </td>
-                                        <td class="col-secondary">
-                                            @if($pet->jenis_kelamin == 'L')
-                                                <span class="badge bg-primary">Jantan</span>
-                                            @else
-                                                <span class="badge bg-danger">Betina</span>
+                                            <strong>{{ $pet->nama }}</strong>
+                                            @if ($pet->warna_tanda)
+                                                <br>
+                                                <small class="text-muted">{{ $pet->warna_tanda }}</small>
                                             @endif
                                         </td>
+                                        {{-- Pemilik --}}
                                         <td class="col-secondary">
-                                            {{ \Carbon\Carbon::parse($pet->tanggal_lahir)->format('d/m/Y') }}
+                                            <span class="badge bg-info">
+                                                {{ $pet->pemilik->user->name ?? '-' }}
+                                            </span>
                                         </td>
+                                        {{-- Ras & Jenis --}}
+                                        <td class="col-secondary">
+                                            <span class="badge bg-success">
+                                                {{ $pet->rasHewan->nama_ras ?? '-' }}
+                                            </span>
+                                            @if ($pet->rasHewan && $pet->rasHewan->jenisHewan)
+                                                <br>
+                                                <small class="text-muted">{{ $pet->rasHewan->jenisHewan->nama_jenis_hewan }}</small>
+                                            @endif
+                                        </td>
+                                        {{-- Kelamin --}}
+                                        <td class="col-secondary">
+                                            @switch($pet->jenis_kelamin)
+                                                @case('L')
+                                                    <span class="badge bg-primary">Jantan</span>
+                                                    @break
+                                                @case('P')
+                                                    <span class="badge bg-danger">Betina</span>
+                                                    @break
+                                                @default
+                                                    <span class="badge bg-secondary">-</span>
+                                            @endswitch
+                                        </td>
+                                        {{-- Tanggal Lahir --}}
+                                        <td class="col-secondary">
+                                            @if ($pet->tanggal_lahir)
+                                                {{ \Carbon\Carbon::parse($pet->tanggal_lahir)->format('d/m/Y') }}
+                                            @else
+                                                -
+                                            @endif
+                                        </td>
+                                        {{-- Action Button --}}
                                         <td class="col-action">
                                             <div class="action-buttons">
                                                 <button class="btn-action btn-edit btnEditPet"
-                                                    data-id="{{ $pet->idpet }}" 
+                                                    data-id="{{ $pet->idpet }}"
                                                     data-nama="{{ $pet->nama }}"
                                                     data-tanggal-lahir="{{ $pet->tanggal_lahir }}"
                                                     data-warna-tanda="{{ $pet->warna_tanda }}"
@@ -86,15 +110,14 @@
                                                     <i class="bi bi-pencil-square"></i>
                                                 </button>
                                                 <button class="btn-action btn-delete btnHapusPet"
-                                                    data-id="{{ $pet->idpet }}" 
+                                                    data-id="{{ $pet->idpet }}"
                                                     data-bs-toggle="tooltip" title="Hapus">
                                                     <i class="bi bi-trash"></i>
                                                 </button>
                                             </div>
                                         </td>
                                     </tr>
-                                @endforeach
-                                @if ($pets->count() == 0)
+                                @empty
                                     <tr>
                                         <td colspan="7" class="empty-state">
                                             <div class="empty-content">
@@ -104,7 +127,7 @@
                                             </div>
                                         </td>
                                     </tr>
-                                @endif
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
@@ -266,20 +289,31 @@
                 resetForm();
                 const id = $(this).data('id');
                 const nama = $(this).data('nama');
-                const tanggalLahir = $(this).data('tanggal-lahir');
+                let tanggalLahir = $(this).data('tanggal-lahir');
                 const warnaTanda = $(this).data('warna-tanda');
                 const jenisKelamin = $(this).data('jenis-kelamin');
                 const idpemilik = $(this).data('idpemilik');
                 const idrasHewan = $(this).data('idras-hewan');
+
+                // Format tanggal lahir (if needed) agar sesuai input type="date"
+                if (tanggalLahir && tanggalLahir.length > 10) {
+                    tanggalLahir = tanggalLahir.substring(0, 10);
+                }
 
                 $('#modalPetLabel').text('Edit Pet');
                 $('#pet_id').val(id);
                 $('#nama').val(nama);
                 $('#tanggal_lahir').val(tanggalLahir);
                 $('#warna_tanda').val(warnaTanda);
-                $('input[name="jenis_kelamin"][value="' + jenisKelamin + '"]').prop('checked', true);
-                $('#idpemilik').val(idpemilik);
-                $('#idras_hewan').val(idrasHewan);
+
+                // Uncheck all first to avoid issues when switching values
+                $('input[name="jenis_kelamin"]').prop('checked', false);
+                if (jenisKelamin) {
+                    $('input[name="jenis_kelamin"][value="' + jenisKelamin + '"]').prop('checked', true);
+                }
+
+                $('#idpemilik').val(idpemilik).trigger('change');
+                $('#idras_hewan').val(idrasHewan).trigger('change');
                 modalPet.show();
             });
 

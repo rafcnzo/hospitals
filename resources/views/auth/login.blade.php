@@ -323,12 +323,17 @@
                                     </label>
                                 </div>
 
-                                <div
-                                    class="d-flex flex-column flex-sm-row justify-content-between align-items-center gap-3 mb-4">
-                                    <a class="text-decoration-none text-primary" href="{{ route('password.request') }}">
-                                        Forgot your password?
-                                    </a>
-
+                                <div class="mb-4">
+                                    <div>
+                                        <a class="text-decoration-none text-primary" href="{{ route('password.request') }}">
+                                            Forgot your password?
+                                        </a>
+                                    </div>
+                                    <div class="mt-2">
+                                        <a class="text-decoration-none text-primary" href="{{ route('register') }}">
+                                            Don't have an account? Register
+                                        </a>
+                                    </div>
                                 </div>
                                 <button type="submit" class="btn btn-primary w-100 w-sm-auto" id="loginBtn">
                                     <i class="fas fa-sign-in-alt"></i> Log in

@@ -35,12 +35,6 @@ class RolePermissionSeeder extends Seeder
             Permission::firstOrCreate(['name' => $perm]);
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | DEFINISI ROLES & ASSIGN PERMISSIONS
-        |--------------------------------------------------------------------------
-        */
-
         // 1. ADMIN — semua akses
         $admin = Role::firstOrCreate(['name' => 'admin']);
         $admin->syncPermissions(Permission::all());

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
@@ -25,10 +24,31 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request): RedirectResponse
     {
         $request->authenticate();
-
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        $user = Auth::user();
+
+        if ($user->hasRole('admin')) {
+            return redirect()->intended('/dashboard');
+        }
+
+        if ($user->hasRole('dokter')) {
+            return redirect()->intended('/dokter/rekam-medis');
+        }
+
+        if ($user->hasRole('resepsionis')) {
+            return redirect()->intended('/resepsionis/jadwal-temu');
+        }
+
+        if ($user->hasRole('perawat')) {
+            return redirect()->intended('/admin/pet');
+        }
+
+        if ($user->hasRole('pemilik')) {
+            return redirect()->intended('/');
+        }
+
+        return redirect()->intended('/');
     }
 
     /**

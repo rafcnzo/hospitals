@@ -1,4 +1,137 @@
 @extends('layouts.app')
+@section('style')
+    <style>
+        #viewRekamMedisContent .info-section {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        #viewRekamMedisContent .info-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        #viewRekamMedisContent .info-item {
+            display: flex;
+            align-items: start;
+            gap: 12px;
+        }
+
+        #viewRekamMedisContent .info-item i {
+            color: #0d6efd;
+            font-size: 20px;
+            margin-top: 2px;
+        }
+
+        #viewRekamMedisContent .info-label {
+            font-size: 12px;
+            color: #6c757d;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        #viewRekamMedisContent .info-value {
+            font-size: 15px;
+            color: #212529;
+            font-weight: 600;
+        }
+
+        #viewRekamMedisContent .medical-section {
+            margin-bottom: 24px;
+        }
+
+        #viewRekamMedisContent .section-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e9ecef;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        #viewRekamMedisContent .section-title i {
+            color: #0d6efd;
+        }
+
+        #viewRekamMedisContent .section-content {
+            background-color: #fff;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            padding: 15px;
+            color: #495057;
+            line-height: 1.6;
+        }
+
+        #viewRekamMedisContent .treatment-item {
+            background-color: #fff;
+            border: 1px solid #dee2e6;
+            border-left: 3px solid #0d6efd;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 12px;
+        }
+
+        #viewRekamMedisContent .treatment-header {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        #viewRekamMedisContent .treatment-number {
+            background-color: #0d6efd;
+            color: white;
+            width: 26px;
+            height: 26px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 13px;
+            flex-shrink: 0;
+        }
+
+        #viewRekamMedisContent .treatment-title {
+            flex: 1;
+        }
+
+        #viewRekamMedisContent .treatment-code {
+            color: #0d6efd;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        #viewRekamMedisContent .treatment-name {
+            color: #212529;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        #viewRekamMedisContent .treatment-detail {
+            color: #6c757d;
+            font-size: 14px;
+            margin-left: 38px;
+        }
+
+        #viewRekamMedisContent .empty-state {
+            text-align: center;
+            padding: 30px;
+            color: #6c757d;
+        }
+
+        #viewRekamMedisContent .empty-state i {
+            font-size: 40px;
+            color: #dee2e6;
+            margin-bottom: 12px;
+        }
+    </style>
+@endsection
 @section('content')
     <div class="page-content">
         <div class="container-fluid">
@@ -55,7 +188,9 @@
                                         <td class="col-main">
                                             <div class="item-info">
                                                 <span class="item-name">{{ $rm->pet->nama ?? '-' }}</span>
-                                                <span class="item-email">{{ $rm->pet->rasHewan->nama_ras ?? '-' }} ({{ $rm->pet->rasHewan->jenisHewan->nama_jenis_hewan ?? '-' }})</span>
+                                                <span class="item-email">{{ $rm->pet->rasHewan->nama_ras ?? '-' }}
+                                                    ({{ $rm->pet->rasHewan->jenisHewan->nama_jenis_hewan ?? '-' }})
+                                                </span>
                                             </div>
                                         </td>
                                         <td class="col-secondary">
@@ -70,18 +205,18 @@
                                         <td class="col-action">
                                             <div class="action-buttons">
                                                 <button class="btn-action btn-view btnViewRekamMedis"
-                                                    data-id="{{ $rm->idrekam_medis }}"
-                                                    data-bs-toggle="tooltip" title="Lihat Detail">
+                                                    data-id="{{ $rm->idrekam_medis }}" data-bs-toggle="tooltip"
+                                                    title="Lihat Detail">
                                                     <i class="bi bi-eye"></i>
                                                 </button>
                                                 <button class="btn-action btn-edit btnEditRekamMedis"
-                                                    data-id="{{ $rm->idrekam_medis }}"
-                                                    data-bs-toggle="tooltip" title="Edit">
+                                                    data-id="{{ $rm->idrekam_medis }}" data-bs-toggle="tooltip"
+                                                    title="Edit">
                                                     <i class="bi bi-pencil-square"></i>
                                                 </button>
                                                 <button class="btn-action btn-delete btnHapusRekamMedis"
-                                                    data-id="{{ $rm->idrekam_medis }}"
-                                                    data-bs-toggle="tooltip" title="Hapus">
+                                                    data-id="{{ $rm->idrekam_medis }}" data-bs-toggle="tooltip"
+                                                    title="Hapus">
                                                     <i class="bi bi-trash"></i>
                                                 </button>
                                             </div>
@@ -127,32 +262,33 @@
                     </div>
                     <div class="modal-body custom-modal-body">
                         <div id="formRekamMedisAlert"></div>
-                        
+
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group-custom">
                                     <label for="idpet" class="form-label-custom required">
                                         <i class="bi bi-heart-fill"></i> Pet
                                     </label>
-                                    <select class="form-control-custom" id="idpet" name="idpet" required>
+                                    <select class="form-control-custom select2" id="idpet" name="idpet" required
+                                        style="width: 100%;">
                                         <option value="">Pilih Pet</option>
                                         @foreach ($pets as $pet)
-                                            <option value="{{ $pet->idpet }}">{{ $pet->nama }} - {{ $pet->pemilik->user->name ?? '-' }}</option>
+                                            <option value="{{ $pet->idpet }}">{{ $pet->nama }} -
+                                                {{ $pet->pemilik->user->name ?? '-' }}</option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
                             <div class="col-md-6">
+                                <input type="hidden" id="dokter_pemeriksa" name="dokter_pemeriksa"
+                                    value="{{ auth()->user()->id }}">
                                 <div class="form-group-custom">
-                                    <label for="dokter_pemeriksa" class="form-label-custom required">
+                                    <label class="form-label-custom required">
                                         <i class="bi bi-person-badge"></i> Dokter Pemeriksa
                                     </label>
-                                    <select class="form-control-custom" id="dokter_pemeriksa" name="dokter_pemeriksa" required>
-                                        <option value="">Pilih Dokter</option>
-                                        @foreach ($dokters as $dokter)
-                                            <option value="{{ $dokter->id }}">{{ $dokter->name }}</option>
-                                        @endforeach
-                                    </select>
+                                    <div class="form-control-custom" style="background-color: #f5f7fa;" readonly>
+                                        {{ auth()->user()->name }}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -161,25 +297,28 @@
                             <label for="anamnesa" class="form-label-custom required">
                                 <i class="bi bi-chat-left-text"></i> Anamnesa
                             </label>
-                            <textarea class="form-control-custom" id="anamnesa" name="anamnesa" required maxlength="1000" rows="3" placeholder="Riwayat penyakit dan keluhan"></textarea>
+                            <textarea class="form-control-custom" id="anamnesa" name="anamnesa" required maxlength="1000" rows="3"
+                                placeholder="Riwayat penyakit dan keluhan"></textarea>
                         </div>
 
                         <div class="form-group-custom">
                             <label for="temuan_klinis" class="form-label-custom required">
                                 <i class="bi bi-clipboard-pulse"></i> Temuan Klinis
                             </label>
-                            <textarea class="form-control-custom" id="temuan_klinis" name="temuan_klinis" required maxlength="1000" rows="3" placeholder="Hasil pemeriksaan fisik"></textarea>
+                            <textarea class="form-control-custom" id="temuan_klinis" name="temuan_klinis" required maxlength="1000"
+                                rows="3" placeholder="Hasil pemeriksaan fisik"></textarea>
                         </div>
 
                         <div class="form-group-custom">
                             <label for="diagnosa" class="form-label-custom required">
                                 <i class="bi bi-clipboard2-check"></i> Diagnosa
                             </label>
-                            <textarea class="form-control-custom" id="diagnosa" name="diagnosa" required maxlength="1000" rows="2" placeholder="Diagnosa penyakit"></textarea>
+                            <textarea class="form-control-custom" id="diagnosa" name="diagnosa" required maxlength="1000" rows="2"
+                                placeholder="Diagnosa penyakit"></textarea>
                         </div>
 
                         <hr class="my-4">
-                        
+
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <h6 class="mb-0"><i class="bi bi-list-check"></i> Detail Tindakan Terapi</h6>
                             <button type="button" class="btn btn-sm btn-primary" id="btnTambahDetail">
@@ -206,22 +345,18 @@
         </div>
     </div>
 
-    <!-- Modal View Rekam Medis -->
-    <div class="modal fade" id="modalViewRekamMedis" tabindex="-1" aria-labelledby="modalViewRekamMedisLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content custom-modal">
-                <div class="modal-header custom-modal-header">
-                    <div class="modal-header-content">
-                        <div class="modal-icon">
-                            <i class="bi bi-file-medical-fill"></i>
-                        </div>
-                        <h5 class="modal-title" id="modalViewRekamMedisLabel">Detail Rekam Medis</h5>
-                    </div>
-                    <button type="button" class="btn-close-custom" data-bs-dismiss="modal" aria-label="Tutup">
-                        <i class="bi bi-x"></i>
-                    </button>
+    <div class="modal fade" id="modalViewRekamMedis" tabindex="-1" aria-labelledby="modalViewRekamMedisLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="modalViewRekamMedisLabel">
+                        <i class="fas fa-file-medical me-2"></i>Detail Rekam Medis
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
                 </div>
-                <div class="modal-body custom-modal-body" id="viewRekamMedisContent">
+                <div class="modal-body" id="viewRekamMedisContent">
                     <!-- Content akan diisi via AJAX -->
                 </div>
             </div>
@@ -283,8 +418,10 @@
                 $detailContainer.append(row);
 
                 if (data) {
-                    $(`.detail-item[data-index="${detailCount}"] select[name="details[${detailCount}][idkode_tindakan_terapi]"]`).val(data.idkode_tindakan_terapi);
-                    $(`.detail-item[data-index="${detailCount}"] input[name="details[${detailCount}][detail]"]`).val(data.detail);
+                    $(`.detail-item[data-index="${detailCount}"] select[name="details[${detailCount}][idkode_tindakan_terapi]"]`)
+                        .val(data.idkode_tindakan_terapi);
+                    $(`.detail-item[data-index="${detailCount}"] input[name="details[${detailCount}][detail]"]`)
+                        .val(data.detail);
                 }
             }
 
@@ -332,60 +469,128 @@
 
             $(document).on('click', '.btnViewRekamMedis', function() {
                 const id = $(this).data('id');
-                
+
                 showLoading('Memuat data...');
                 $.ajax({
-                    url: "{{ url('admin/rekam-medis') }}/" + id,
+                    url: "{{ url('dokter/rekam-medis') }}/" + id,
                     type: 'GET',
                     headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                            .getAttribute('content'),
                         'Accept': 'application/json'
                     },
                     success: function(res) {
                         hideLoading();
                         const data = res.data;
-                        
-                        let detailsHtml = '';
-                        data.details.forEach((detail, idx) => {
-                            detailsHtml += `
-                                <div class="mb-3">
-                                    <strong>${idx + 1}. ${detail.kode_tindakan_terapi.kode} - ${detail.kode_tindakan_terapi.deskripsi_tindakan_terapi}</strong>
-                                    <p class="mb-0 text-muted">${detail.detail}</p>
-                                </div>
-                            `;
+
+                        // Format tanggal
+                        const tanggal = new Date(data.created_at).toLocaleString('id-ID', {
+                            weekday: 'long',
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
                         });
-                        
-                        const content = `
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <strong>Pet:</strong> ${data.pet.nama}<br>
-                                    <strong>Pemilik:</strong> ${data.pet.pemilik.user.name}
+
+                        // Generate treatment list
+                        let detailsHtml = '';
+                        if (data.details && data.details.length > 0) {
+                            data.details.forEach((detail, idx) => {
+                                detailsHtml += `
+                            <div class="treatment-item">
+                                <div class="treatment-header">
+                                    <div class="treatment-number">${idx + 1}</div>
+                                    <div class="treatment-title">
+                                        <div class="treatment-code">${detail.kode_tindakan_terapi.kode}</div>
+                                        <div class="treatment-name">${detail.kode_tindakan_terapi.deskripsi_tindakan_terapi}</div>
+                                    </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <strong>Dokter:</strong> ${data.dokter.name}<br>
-                                    <strong>Tanggal:</strong> ${new Date(data.created_at).toLocaleString('id-ID')}
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="mb-3">
-                                <strong>Anamnesa:</strong>
-                                <p>${data.anamnesa}</p>
-                            </div>
-                            <div class="mb-3">
-                                <strong>Temuan Klinis:</strong>
-                                <p>${data.temuan_klinis}</p>
-                            </div>
-                            <div class="mb-3">
-                                <strong>Diagnosa:</strong>
-                                <p>${data.diagnosa}</p>
-                            </div>
-                            <hr>
-                            <div>
-                                <strong>Detail Tindakan Terapi:</strong>
-                                ${detailsHtml}
+                                <div class="treatment-detail">${detail.detail || '-'}</div>
                             </div>
                         `;
-                        
+                            });
+                        } else {
+                            detailsHtml = `
+                        <div class="empty-state">
+                            <i class="fas fa-inbox"></i>
+                            <p class="mb-0">Tidak ada detail tindakan terapi</p>
+                        </div>
+                    `;
+                        }
+
+                        const content = `
+                    <!-- Info Section -->
+                    <div class="info-section">
+                        <div class="info-row">
+                            <div class="info-item">
+                                <i class="fas fa-paw"></i>
+                                <div>
+                                    <div class="info-label">Nama Pet</div>
+                                    <div class="info-value">${data.pet.nama}</div>
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-user"></i>
+                                <div>
+                                    <div class="info-label">Pemilik</div>
+                                    <div class="info-value">${data.pet.pemilik.user.name}</div>
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-user-md"></i>
+                                <div>
+                                    <div class="info-label">Dokter</div>
+                                    <div class="info-value">${data.dokter.name}</div>
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-calendar-alt"></i>
+                                <div>
+                                    <div class="info-label">Tanggal Pemeriksaan</div>
+                                    <div class="info-value">${tanggal}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Anamnesa -->
+                    <div class="medical-section">
+                        <div class="section-title">
+                            <i class="fas fa-comments"></i>
+                            Anamnesa
+                        </div>
+                        <div class="section-content">${data.anamnesa || '-'}</div>
+                    </div>
+
+                    <!-- Temuan Klinis -->
+                    <div class="medical-section">
+                        <div class="section-title">
+                            <i class="fas fa-heartbeat"></i>
+                            Temuan Klinis
+                        </div>
+                        <div class="section-content">${data.temuan_klinis || '-'}</div>
+                    </div>
+
+                    <!-- Diagnosa -->
+                    <div class="medical-section">
+                        <div class="section-title">
+                            <i class="fas fa-stethoscope"></i>
+                            Diagnosa
+                        </div>
+                        <div class="section-content">${data.diagnosa || '-'}</div>
+                    </div>
+
+                    <!-- Detail Tindakan Terapi -->
+                    <div class="medical-section">
+                        <div class="section-title">
+                            <i class="fas fa-pills"></i>
+                            Detail Tindakan Terapi
+                        </div>
+                        ${detailsHtml}
+                    </div>
+                `;
+
                         $('#viewRekamMedisContent').html(content);
                         modalViewRekamMedis.show();
                     },
@@ -398,33 +603,42 @@
 
             $(document).on('click', '.btnEditRekamMedis', function() {
                 const id = $(this).data('id');
-                
+
                 resetForm();
                 $('#modalRekamMedisLabel').text('Edit Rekam Medis');
                 $('#rekam_medis_id').val(id);
-                
+
                 showLoading('Memuat data...');
                 $.ajax({
-                    url: "{{ url('admin/rekam-medis') }}/" + id,
+                    url: "{{ url('dokter/rekam-medis') }}/" + id,
                     type: 'GET',
                     headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                            .getAttribute('content'),
                         'Accept': 'application/json'
                     },
                     success: function(res) {
                         hideLoading();
                         const data = res.data;
-                        
-                        $('#idpet').val(data.idpet);
+
+                        $('#idpet').val(data.idpet).trigger(
+                            'change'); // Pastikan select2 pet terisi
                         $('#dokter_pemeriksa').val(data.dokter_pemeriksa);
                         $('#anamnesa').val(data.anamnesa);
                         $('#temuan_klinis').val(data.temuan_klinis);
                         $('#diagnosa').val(data.diagnosa);
-                        
-                        data.details.forEach(detail => {
-                            addDetailRow(detail);
-                        });
-                        
+
+                        // Kosongkan detail sebelum menambah ulang
+                        $('#detailContainer').empty();
+                        detailCount = 0;
+                        if (data.details && data.details.length > 0) {
+                            data.details.forEach(function(detail) {
+                                addDetailRow(detail);
+                            });
+                        } else {
+                            addDetailRow();
+                        }
+
                         modalRekamMedis.show();
                     },
                     error: function(xhr) {
@@ -451,14 +665,15 @@
 
                     showLoading('Menghapus rekam medis...');
                     $.ajax({
-                        url: "{{ route('admin.rekam-medis.destroy') }}",
+                        url: "{{ route('dokter.rekam-medis.destroy') }}",
                         type: 'POST',
                         data: {
                             id: id,
                             _method: 'DELETE'
                         },
                         headers: {
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                            'X-CSRF-TOKEN': document.querySelector(
+                                'meta[name="csrf-token"]').getAttribute('content'),
                             'Accept': 'application/json'
                         },
                         success: function(res) {
@@ -466,7 +681,8 @@
                             Swal.fire({
                                 icon: 'success',
                                 title: 'Berhasil',
-                                text: res.message || 'Rekam medis berhasil dihapus.'
+                                text: res.message ||
+                                    'Rekam medis berhasil dihapus.'
                             }).then(() => {
                                 window.location.reload();
                             });
@@ -496,8 +712,8 @@
                 const isEdit = !!id;
 
                 const url = isEdit ?
-                    "{{ url('admin/rekam-medis') }}/" + id :
-                    "{{ route('admin.rekam-medis.store') }}";
+                    "{{ url('dokter/rekam-medis') }}/" + id :
+                    "{{ route('dokter.rekam-medis.store') }}";
 
                 const method = isEdit ? 'PUT' : 'POST';
 
@@ -514,7 +730,9 @@
                 $('.detail-item').each(function() {
                     const index = $(this).data('index');
                     payload.details.push({
-                        idkode_tindakan_terapi: $(`select[name="details[${index}][idkode_tindakan_terapi]"]`).val(),
+                        idkode_tindakan_terapi: $(
+                                `select[name="details[${index}][idkode_tindakan_terapi]"]`)
+                            .val(),
                         detail: $(`input[name="details[${index}][detail]"]`).val()
                     });
                 });
@@ -532,7 +750,8 @@
                         _method: method
                     },
                     headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                            .getAttribute('content'),
                         'Accept': 'application/json'
                     },
                     success: function(res) {
@@ -575,6 +794,15 @@
                     }
                 });
             });
+
+            if (window.jQuery && $.fn.select2) {
+                $('#idpet').select2({
+                    placeholder: 'Pilih Pet',
+                    allowClear: true,
+                    width: 'resolve',
+                    dropdownParent: $('#modalRekamMedis')
+                });
+            }
         });
     </script>
 @endpush

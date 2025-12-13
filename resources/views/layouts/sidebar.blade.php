@@ -8,12 +8,14 @@
         </div>
     </div>
     <ul class="metismenu" id="menu">
+        @role('admin')
         <li class="mb-1">
             <a href="{{ url('dashboard') }}">
                 <div class="parent-icon"><i class="bi bi-speedometer2"></i></div>
                 <div class="menu-title">Dashboard</div>
             </a>
         </li>
+        @endrole
         
         @role('admin')
         <li class="mb-1">
@@ -52,7 +54,7 @@
         </li>
         @endrole
 
-        @role('admin')
+        @hasanyrole('admin|resepsionis|dokter|perawat')
         <li class="mb-1">
             <a href="#" class="has-arrow">
                 <div class="parent-icon"><i class="bi bi-heart"></i></div>
@@ -67,11 +69,17 @@
                 </li>
             </ul>
         </li>
-        @endrole
+        <li class="mb-1">
+            <a href="{{ route('resepsionis.jadwal-temu.index') }}">
+                <div class="parent-icon"><i class="bi bi-calendar-check"></i></div>
+                <div class="menu-title">Jadwal Temu</div>
+            </a>
+        </li>
+        @endhasanyrole
 
         @hasanyrole('admin|dokter')
         <li class="mb-1">
-            <a href="{{ route('admin.rekam-medis.index') }}">
+            <a href="{{ route('dokter.rekam-medis.index') }}">
                 <div class="parent-icon"><i class="bi bi-file-medical-fill"></i></div>
                 <div class="menu-title">Rekam Medis</div>
             </a>

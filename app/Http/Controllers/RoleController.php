@@ -1,10 +1,11 @@
 <?php
-
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Models\Permission;
 use App\Models\Role;
-use Illuminate\Validation\Rule;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class RoleController extends Controller
 {
@@ -12,84 +13,83 @@ class RoleController extends Controller
     {
         $title = 'Manajemen Role';
 
-        $roles = Role::orderBy('nama_role')
-            ->withCount('users')
+        $roles = Role::orderBy('name')
+            ->withCount(['users', 'permissions'])
             ->get();
 
-        return view('roles.index', compact('title', 'roles'));
+        $permissions = Permission::orderBy('name')->get();
+
+        return view('roles.index', compact('title', 'roles', 'permissions'));
     }
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'nama_role' => ['required', 'string', 'max:100', 'unique:role,nama_role'],
+        $request->validate([
+            'nama_role'   => 'required|unique:roles,name',
+            'permissions' => 'array',
         ]);
 
-        $role = Role::create(['nama_role' => $validated['nama_role']]);
+        DB::transaction(function () use ($request) {
+            $role = Role::create(['name' => $request->nama_role]);
 
-        return response()->json([
-            'status'  => 'success',
-            'message' => 'Role berhasil ditambahkan.',
-            'data'    => [
-                'idrole'    => $role->idrole,
-                'nama_role' => $role->nama_role,
-            ],
-        ]);
+            if ($request->has('permissions')) {
+                $role->syncPermissions($request->permissions);
+            }
+        });
+
+        return response()->json(['message' => 'Role berhasil dibuat']);
     }
 
     public function edit($id)
     {
-        $role = Role::findOrFail($id);
+        $role = Role::with('permissions')->findOrFail($id);
 
         return response()->json([
-            'status' => 'success',
-            'data'   => [
-                'idrole'    => $role->idrole,
-                'nama_role' => $role->nama_role,
-            ]
+            'data'            => $role,
+            'rolePermissions' => $role->permissions->pluck('name'),
         ]);
     }
 
     public function update(Request $request, $id)
     {
-        $role = Role::findOrFail($id);
-
-        $validated = $request->validate([
-            'nama_role' => [
-                'required', 'string', 'max:100',
-                Rule::unique('role', 'nama_role')->ignore($role->idrole, 'idrole')
-            ],
+        $request->validate([
+            'nama_role'   => 'required|unique:roles,name,' . $id,
+            'permissions' => 'array',
         ]);
 
-        $role->nama_role = $validated['nama_role'];
-        $role->save();
+        DB::transaction(function () use ($request, $id) {
+            $role = Role::findOrFail($id);
+            $role->update(['name' => $request->nama_role]);
 
-        return response()->json([
-            'status'  => 'success',
-            'message' => 'Role berhasil diperbarui.',
-        ]);
+            if ($request->has('permissions')) {
+                $role->syncPermissions($request->permissions);
+            } else {
+                $role->syncPermissions([]);
+            }
+        });
+
+        return response()->json(['message' => 'Role berhasil diupdate']);
     }
 
     public function destroy(Request $request)
     {
         $request->validate([
-            'id' => ['required', 'integer', 'exists:role,idrole']
+            'id' => ['required', 'integer', 'exists:roles,id'],
         ]);
 
         $role = Role::findOrFail($request->id);
 
-        if ($role->nama_role === 'admin') {
+        if (strtolower($role->name) === 'admin') {
             return response()->json([
-                'status' => 'error',
-                'message' => 'Role admin tidak boleh dihapus.'
+                'status'  => 'error',
+                'message' => 'Role admin tidak boleh dihapus.',
             ], 422);
         }
 
-        // Check if role has users
         if ($role->users()->count() > 0) {
             return response()->json([
-                'status' => 'error',
-                'message' => 'Role tidak bisa dihapus karena masih memiliki user.'
+                'status'  => 'error',
+                'message' => 'Role tidak bisa dihapus karena masih memiliki user aktif.',
             ], 422);
         }
 

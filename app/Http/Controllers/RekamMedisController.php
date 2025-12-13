@@ -20,7 +20,7 @@ class RekamMedisController extends Controller
         $pets = Pet::with(['pemilik.user', 'rasHewan'])->orderBy('nama')->get();
         $kodeTindakanTerapis = KodeTindakanTerapi::orderBy('kode')->get();
         $dokters = User::whereHas('roles', function($query) {
-            $query->where('nama_role', 'dokter');
+            $query->where('name', 'dokter');
         })->orderBy('name')->get();
         
         return view('rekam-medis.index', compact('title', 'rekamMedis', 'pets', 'kodeTindakanTerapis', 'dokters'));

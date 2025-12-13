@@ -1,28 +1,15 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Spatie\Permission\Models\Role as SpatieRole;
 
-class Role extends Model
+class Role extends SpatieRole
 {
     use HasFactory;
 
-    protected $table = 'role';
-    protected $primaryKey = 'idrole';
-    
     protected $fillable = [
-        'nama_role',
+        'name',
+        'guard_name',
     ];
-
-    /**
-     * Many-to-many relationship dengan User
-     */
-    public function users()
-    {
-        return $this->belongsToMany(User::class, 'role_user', 'idrole', 'iduser')
-                    ->withPivot('status')
-                    ->withTimestamps();
-    }
 }

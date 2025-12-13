@@ -2,7 +2,6 @@
 @section('content')
     <div class="page-content">
         <div class="container-fluid">
-            <!-- Page Header -->
             <div class="page-header">
                 <div class="page-header-content">
                     <div class="page-title-wrapper">
@@ -21,14 +20,12 @@
                 </div>
             </div>
 
-            <!-- Data Table Card -->
             <div class="data-card">
                 <div class="data-card-header">
                     <div class="data-card-title">
                         <i class="bi bi-list-ul"></i>
                         <span>Daftar User</span>
                     </div>
-                    {{-- searchbox jika mau --}}
                 </div>
                 <div class="data-card-body">
                     <div class="table-container">
@@ -57,16 +54,18 @@
                                             <span class="badge-unit">{{ $user->email }}</span>
                                         </td>
                                         <td class="col-secondary">
+                                            {{-- PERBAIKAN 1: Gunakan $role->name --}}
                                             @foreach ($user->roles as $role)
-                                                <span class="badge bg-info">{{ $role->nama_role }}</span>
+                                                <span class="badge bg-info">{{ $role->name }}</span>
                                             @endforeach
                                         </td>
                                         <td class="col-action">
                                             <div class="action-buttons">
+                                                {{-- PERBAIKAN 2: pluck('name') untuk data roles --}}
                                                 <button class="btn-action btn-edit btnEditUser"
                                                     data-id="{{ $user->id }}" data-name="{{ $user->name }}"
                                                     data-email="{{ $user->email }}"
-                                                    data-roles="{{ json_encode($user->roles->pluck('nama_role')) }}"
+                                                    data-roles="{{ json_encode($user->roles->pluck('name')) }}"
                                                     data-bs-toggle="tooltip" title="Edit">
                                                     <i class="bi bi-pencil-square"></i>
                                                 </button>
@@ -97,7 +96,6 @@
         </div>
     </div>
 
-    <!-- Modal User -->
     <div class="modal fade" id="modalUser" tabindex="-1" aria-labelledby="modalUserLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content custom-modal">
@@ -140,21 +138,21 @@
                             <label for="user_roles" class="form-label-custom required">
                                 <i class="bi bi-person-gear"></i> Role
                             </label>
-                            <select class="form-control-custom" id="user_roles" name="roles[]" required multiple="multiple" style="width: 100%">
+                            <select class="form-control-custom" id="user_roles" name="roles[]" required
+                                multiple="multiple" style="width: 100%">
+                                {{-- PERBAIKAN 3: Value dan Label menggunakan $role->name --}}
                                 @foreach ($roles as $role)
-                                    <option value="{{ $role->nama_role }}">{{ $role->nama_role }}</option>
+                                    <option value="{{ $role->name }}">{{ $role->name }}</option>
                                 @endforeach
                             </select>
                         </div>
                     </div>
                     <div class="modal-footer custom-modal-footer">
                         <button type="button" class="btn-secondary-custom" data-bs-dismiss="modal">
-                            <i class="bi bi-x"></i>
-                            Batal
+                            <i class="bi bi-x"></i> Batal
                         </button>
                         <button type="submit" class="btn-primary-custom" id="btnSimpanUser">
-                            <i class="bi bi-check"></i>
-                            Simpan
+                            <i class="bi bi-check"></i> Simpan
                         </button>
                     </div>
                 </form>
@@ -164,7 +162,6 @@
 @endsection
 @push('script')
     <script>
-        // Semua jQuery/Swal/AJAX untuk halaman users taruh di dalam event ini
         window.addEventListener('app-libraries-loaded', function() {
             const $ = window.jQuery;
 
@@ -205,6 +202,19 @@
                 });
             }
 
+            // Tambahkan fungsi loading helper jika belum ada global
+            function showLoading(msg) {
+                Swal.fire({
+                    title: msg,
+                    allowOutsideClick: false,
+                    didOpen: () => Swal.showLoading()
+                });
+            }
+
+            function hideLoading() {
+                Swal.close();
+            }
+
             // Tombol "Tambah User"
             $btnTambah.on('click', function() {
                 resetForm();
@@ -225,6 +235,8 @@
                 $('#user_name').val(name);
                 $('#user_email').val(email);
                 $passwordHelp.text('(kosongkan jika tidak ingin mengganti password)');
+
+                // Trigger change agar jika pakai Select2, tampilannya update
                 $rolesSelect.val(roles).trigger('change');
 
                 modalUser.show();
