@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Auth;
 
@@ -52,5 +53,9 @@ class AppServiceProvider extends ServiceProvider
             
             return false;
         });
+
+        if($this->app->environment('production')) {
+            URL::forceScheme('https');
+        }
     }
 }
