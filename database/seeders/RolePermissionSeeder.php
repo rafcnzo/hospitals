@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use App\Models\User;
 
 class RolePermissionSeeder extends Seeder
 {
@@ -39,6 +40,16 @@ class RolePermissionSeeder extends Seeder
         $admin = Role::firstOrCreate(['name' => 'admin']);
         $admin->syncPermissions(Permission::all());
 
+        // Buat user admin dan assign role admin
+        $adminUser = User::firstOrCreate(
+            ['email' => 'admin@gmail.com'],
+            [
+                'name' => 'Admin',
+                'password' => bcrypt('password'),
+            ]
+        );
+        $adminUser->assignRole($admin);
+
         // 2. DOKTER — dashboard, pasien, laporan
         $doctor = Role::firstOrCreate(['name' => 'dokter']);
         $doctor->syncPermissions([
@@ -62,6 +73,6 @@ class RolePermissionSeeder extends Seeder
             'manage reports',
         ]);
 
-        echo "Roles & permissions berhasil dibuat!\n";
+        echo "Roles, permissions, dan user admin berhasil dibuat!\n";
     }
 }
